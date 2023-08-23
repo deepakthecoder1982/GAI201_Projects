@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ todo.title }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .todo-card {
+        display: flex; /* Add this */
+        align-items: center; /* Align items horizontally */
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        max-width: 500px;
+        width: 100%;
+        min-width: 60%;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .todo-card:hover {
+        transform: scale(1.02);
+      }
+
+      .todo-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .todo-actions a {
+        text-decoration: none;
+        color: #333;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
+
+      .todo-actions a:hover {
+        background-color: #333;
+        color: #fff;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+      /* .each_todo{
+        border: 1px solid dodgerblue;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 95%;
+      }
+      .each_todo h3{
+        text-align: center;
+        width: 10%;
+        border: 1px solid black;
+        word-wrap: break-word;
+      }
+      .each_todo p{
+        width: 8%;
+        text-align: left;
+        word-wrap: break-word;
+      }
+      .each_todo p:nth-child(3){
+        width: 15%;
+      } */
+      .completed {
+        padding: 5px 10px;
+        background-color: green;
+        color: whitesmoke;
+        font-weight: bold;
+        border-radius: 6px;
+        text-align: center;
+      }
+      .pending {
+        padding: 5px;
+        background-color: orange;
+        color: whitesmoke;
+        font-weight: bold;
+        border-radius: 6px;
+        text-align: center;
+      }
+      a {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    <button onclick="CreateTodo()">New todo</button>
+    {% for todo in todos %}
+    <div class="todo-card">
+      <h3>{{ todo.title }}</h3>
+      <p>{{ todo.description }}</p>
+      <p>Created at: {{ todo.created_at }}</p>
+      {% if todo.completed %}
+      <p class="completed">Completed</p>
+      {% else %}
+      <p class="pending">Pending</p>
+      {%endif %}
+      <div class="todo-actions">
+        <a href="{% url 'todo_update' todo.id %}">Update</a
+        >
+        <a href="{% url 'todo_delete' todo.id %}">Delete</a>
+      </div>
+    </div>
+    {% endfor %}
+  </body>
+  <script>
+    const CreateTodo = () => {
+      window.location.href = "{% url 'todo_create' %}";
+    };
+  </script>
+</html>

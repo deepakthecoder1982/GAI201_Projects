@@ -1,0 +1,104 @@
+<!-- zomato/templates/menu.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Zesty Zomato Menu</title>
+    <link rel="stylesheet" href="static/style.css" />
+  </head>
+  <body>
+    <h1>Welcome to Zesty Zomato!</h1>
+    <h2>Menu:</h2>
+    <ul id="list_of_items">
+      {% for dish_id, dish_info in menu.items %}
+      <li>
+        {{ dish_info.name }} - ${{ dish_info.price }} {% if dish_info.available
+        %} (Available) {% else %} (Not Available) {% endif %}
+        <button class="edit-button" data-dish-id="{{ dish_id }}">Edit</button>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="edit-dish-form" style="display: none">
+      <form method="post">
+        {% csrf_token %}
+        <label for="edit_dish_name">Dish Name:</label>
+        <input type="text" name="edit_dish_name" required /><br />
+        <label for="edit_dish_price">Dish Price:</label>
+        <input
+          type="number"
+          step="0.01"
+          name="edit_dish_price"
+          required
+        /><br />
+        <label for="edit_dish_available">Available:</label>
+        <input type="checkbox" name="edit_dish_available" /><br />
+        <button type="submit">Update Dish</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("add-dish-button")
+        .addEventListener("click", function () {
+          document.getElementById("add-dish-form").style.display = "block";
+        });
+
+      document
+        .querySelector("#add-dish-form form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const csrfToken = document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+          ).value;
+          const dish_name = document.getElementsByName("dish_name")[0].value;
+          const dish_price = document.getElementsByName("dish_price")[0].value;
+          const dish_available =
+            document.getElementsByName("dish_available")[0].value;
+          const details = {
+            dish_name,
+            dish_price,
+            dish_available,
+          };
+          console.log(details);
+          await fetch("http://localhost:8000/create/", {
+            method: "POST",
+            body: JSON.stringify(details),
+            headers: {
+              "content-type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Update the UI using the updated menu data from the response
+              const updatedMenu = data.menu;
+              // Your logic to update the UI here
+              console.log(data); // Replace this with your UI update logic
+              // updateUI(updatedMenu)
+              // window.location.href("http://localhost:8000/")
+              window.location.reload();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+
+      const updateUI = (dish) => {
+        console.log(dish);
+        let mainDiv = document.getElementById("list_of_items");
+        mainDiv.innerHTML = "";
+        for (let each_dish in dish) {
+          const list = document.createElement("li");
+          list.innerHTML = `
+                ${each_dish["name"]} - ${each_dish["price"]} - ${each_dish["available"]} 
+                `;
+          mainDiv.append(list);
+        }
+        // dish.forEach((item) =>{
+
+        // })
+      };
+    </script>
+  </body>
+</html>

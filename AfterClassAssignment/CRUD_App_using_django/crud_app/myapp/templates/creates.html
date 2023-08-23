@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Task</title>
+</head>
+<body>
+    <h2>Create Task</h2>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Your form fields here -->
+        <input type="text" name="name" placeholder="Task Name">
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>
