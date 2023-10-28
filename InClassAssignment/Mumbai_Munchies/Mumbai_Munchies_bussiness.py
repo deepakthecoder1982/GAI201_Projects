@@ -138,7 +138,7 @@ def ExitTheProgramme():
 
 # Function to delete a snack
 def DeleteSnack():
-    id_of_snack = int(input("Enter the Snack Id you want to update: "))
+    id_of_snack = int(input("Enter the Snack Id you want to Delete: "))
     snack = None
     for i in Snack_List:
         if i["id"] == id_of_snack:
@@ -152,6 +152,8 @@ def DeleteSnack():
         if decision_to_delete.lower() == "y":
             Snack_List.remove(snack)
             save_data()
+            print("Snack Deleted Successfully!")
+            start();
         else:
             start()
 

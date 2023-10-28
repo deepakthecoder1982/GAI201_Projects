@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Website{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <!-- Header content goes here -->
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- Footer content goes here -->
+    </footer>
+</body>
+</html>
+
+
+CREATE TABLE  students (
+    StudentId INT AUTO_INCREMENT PRIMARY KEY,
+    StudentName VARCHAR(255) NOT NULL,
+    Age INT,
+);
